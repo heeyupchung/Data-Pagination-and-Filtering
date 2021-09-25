@@ -22,7 +22,7 @@ function showPage(list, page) {
    const startIndex = page * 9 - 9;
    const endIndex = page * 9;
 
-   let studentList = document.getElementsByClassName('student-list')[0];
+   let studentList = document.querySelector('.student-list');
    studentList.innerHTML = '';
    for (let i = 0; i < list.length; i++) {
       if (i >= startIndex && i < endIndex) {
@@ -54,12 +54,11 @@ This function will create and insert/append the elements needed for the paginati
 
 function addPagination(list) {
 
-   // add one to pageNumber maybe? since division gets rid of remainders, and we might need those remainders on the next page
-   const pageNumber = list.length / 9;
+   const numOfPages = list.length / 9;
    let linkList = document.querySelector('.link-list');
 
    linkList.innerHTML = '';
-   for (let i = 0; i < pageNumber; i ++) {
+   for (let i = 0; i < numOfPages; i ++) {
       let buttons = document.createElement('li');
       buttons.innerHTML = `
       <li>
@@ -68,24 +67,21 @@ function addPagination(list) {
       linkList.insertAdjacentHTML('beforeend', buttons.innerHTML);
    }
 
-   let activeButton = linkList.firstElementChild;
-   activeButton.className = 'active';
-
-   //addEventListener can't be used on a nodeList or HTMLCollection I think
+   let firstButton = linkList.firstElementChild.firstElementChild;
+   firstButton.className = 'active';
 
    linkList.addEventListener('click', (e) => {
       
-      //also figure out if that e.target is even correct honestly
       let clickedButton = e.target;
-   
-      // check syntax of this; doubtful this is right
       if (clickedButton.tagName === 'BUTTON') {
-         for (let i = 0; i < linkList.length; i++ ) {
-            activeButton.className = '';
-         }
-   
+         
+         let previousActiveButton = document.querySelector('.active');
+         previousActiveButton.className = '';
+
+         clickedButton.className = '';
+
          clickedButton.className = 'active';
-         showPage(list, pageNumber);
+         showPage(list, numOfPages);
       }
    });
 }
