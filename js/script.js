@@ -11,6 +11,41 @@ For assistance:
    Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
 */
 
+// creates textbox and button for search
+let searchBar =`
+   <label for="search" class="student-search">
+      <span>Search by name</span>
+      <input id="search" placeholder="Search by name...">
+      <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+   </label>`;
+
+let h2 = document.querySelector('h2');
+h2.insertAdjacentHTML('afterend', searchBar);
+
+let input = document.querySelector('input');
+let searchButton = document.querySelector('button');
+
+
+// searches through data
+function search(input, data) {
+   
+   let partialList = [];
+   let text = input.value;
+   
+   for (let i = 0; i < data.length; i++) {
+      if (text.length !== 0 && data[i].name.title.toUpperCase().includes(text.toUpperCase()) || data[i].name.first.toUpperCase().includes(text.toUpperCase()) || data[i].name.last.toUpperCase().includes(text.toUpperCase())) {
+         partialList.push(data[i]);
+      }
+   }
+   if (partialList.length === 0) {
+      const noResults = document.querySelector('.student-list');
+      noResults.innerHTML = `<h3>No results found for "${text}".</h3>`;
+   } else {
+      showPage(partialList, 1);
+      addPagination(partialList);
+   }
+   return partialList;
+}
 
 
 /*
@@ -19,6 +54,8 @@ This function will create and insert/append the elements needed to display a "pa
 */
 
 function showPage(list, page) {
+   
+   // indices for the if statement below; the indices correspond to first and last student item index on the page
    const startIndex = page * 9 - 9;
    const endIndex = page * 9;
 
@@ -29,7 +66,7 @@ function showPage(list, page) {
 
          let studentInfo = document.createElement('li');
 
-         studentInfo.innerHTML = `<li class="student-item cf">
+         studentInfo = `<li class="student-item cf">
             <div class="student-details">
                <img class="avatar" src=${data[i].picture.thumbnail} alt="Profile Picture">
                <h3>${data[i].name.title} ${data[i].name.first} ${data[i].name.last}</h3>
@@ -40,9 +77,20 @@ function showPage(list, page) {
             </div>
          </li>`;
 
-       studentList.appendChild(studentInfo);
+       studentList.insertAdjacentHTML('beforeend', studentInfo);
       }
    }
+
+   //searches for matches from the search bar
+   searchButton.addEventListener('submit', (e) => {
+      e.preventDefault();
+      search(input, data);
+   });
+
+   //searches for matches actively while typing
+   input.addEventListener('keyup', () => {
+      search(input, data);
+   });
 
 }
 
@@ -52,19 +100,23 @@ Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
 
+
+
 function addPagination(list) {
 
-   const numOfPages = list.length / 9;
+   const numOfPages = Math.ceil(list.length / 9);
    let linkList = document.querySelector('.link-list');
 
    linkList.innerHTML = '';
+   if (numOfPages > 0) {
+
    for (let i = 0; i < numOfPages; i ++) {
       let buttons = document.createElement('li');
-      buttons.innerHTML = `
+      buttons = `
       <li>
          <button type="button">${i + 1}</button>
       </li>`;
-      linkList.insertAdjacentHTML('beforeend', buttons.innerHTML);
+      linkList.insertAdjacentHTML('beforeend', buttons);
    }
 
    let firstButton = linkList.firstElementChild.firstElementChild;
@@ -73,21 +125,26 @@ function addPagination(list) {
    linkList.addEventListener('click', (e) => {
       
       let clickedButton = e.target;
+
+      // if pagination button is clicked on, perform the following
       if (clickedButton.tagName === 'BUTTON') {
          
+         //set newly selected button class to active and clear previous button's class
          let previousActiveButton = document.querySelector('.active');
          previousActiveButton.className = '';
 
          clickedButton.className = '';
 
          clickedButton.className = 'active';
-         showPage(list, numOfPages);
+         showPage(list, clickedButton.textContent);
       }
    });
+}
 }
 
 
 // Call functions
 
 showPage(data, 1);
+//search(data);
 addPagination(data);
