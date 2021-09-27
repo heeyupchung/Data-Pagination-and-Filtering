@@ -68,12 +68,12 @@ function showPage(list, page) {
 
          studentInfo = `<li class="student-item cf">
             <div class="student-details">
-               <img class="avatar" src=${data[i].picture.thumbnail} alt="Profile Picture">
-               <h3>${data[i].name.title} ${data[i].name.first} ${data[i].name.last}</h3>
-               <span class="email">${data[i].email}</span>
+               <img class="avatar" src=${list[i].picture.thumbnail} alt="Profile Picture">
+               <h3>${list[i].name.title} ${list[i].name.first} ${list[i].name.last}</h3>
+               <span class="email">${list[i].email}</span>
             </div>
             <div class="joined-details">
-               <span class="date">Joined ${data[i].registered.date}</span>
+               <span class="date">Joined ${list[i].registered.date}</span>
             </div>
          </li>`;
 
@@ -146,5 +146,4 @@ function addPagination(list) {
 // Call functions
 
 showPage(data, 1);
-//search(data);
 addPagination(data);
