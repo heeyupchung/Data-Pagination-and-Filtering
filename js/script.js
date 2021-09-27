@@ -80,19 +80,19 @@ function showPage(list, page) {
        studentList.insertAdjacentHTML('beforeend', studentInfo);
       }
    }
-
-   //searches for matches from the search bar
-   searchButton.addEventListener('submit', (e) => {
-      e.preventDefault();
-      search(input, data);
-   });
-
-   //searches for matches actively while typing
-   input.addEventListener('keyup', () => {
-      search(input, data);
-   });
-
 }
+
+//searches for matches from the search bar
+searchButton.addEventListener('submit', (e) => {
+   e.preventDefault();
+   search(input, data);
+});
+
+//searches for matches actively while typing
+input.addEventListener('keyup', () => {
+   search(input, data);
+});
+
 
 
 /*
