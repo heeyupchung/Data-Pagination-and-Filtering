@@ -27,14 +27,14 @@ let searchButton = document.querySelector('button');
 
 
 // searches through data
-function search(input, data) {
+function search(input, list) {
    
    let partialList = [];
    let text = input.value;
    
-   for (let i = 0; i < data.length; i++) {
-      if (text.length !== 0 && data[i].name.title.toUpperCase().includes(text.toUpperCase()) || data[i].name.first.toUpperCase().includes(text.toUpperCase()) || data[i].name.last.toUpperCase().includes(text.toUpperCase())) {
-         partialList.push(data[i]);
+   for (let i = 0; i < list.length; i++) {
+      if (text.length !== 0 && list[i].name.title.toUpperCase().includes(text.toUpperCase()) || list[i].name.first.toUpperCase().includes(text.toUpperCase()) || list[i].name.last.toUpperCase().includes(text.toUpperCase())) {
+         partialList.push(list[i]);
       }
    }
    if (partialList.length === 0) {
